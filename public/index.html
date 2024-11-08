@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cricket Careers</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Welcome to Cricket Careers</h1>
+
+  <form onsubmit="saveData(event)">
+    <div class="form">
+      <h2>Player Information</h2>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="dob">Date of Birth:</label>
+      <input type="text" id="dob" name="dob" required />
+
+      <label for="imageUrl">Photo URL:</label>
+      <input type="text" id="imageUrl" name="imageUrl" required />
+
+      <label for="birthPlace">Birthplace:</label>
+      <input type="text" id="birthPlace" name="birthPlace" required />
+
+      <label for="career">Career:</label>
+      <textarea id="career" name="career" rows="4" required></textarea>
+
+      <label for="numberOfMatches">Number of Matches:</label>
+      <input type="number" id="numberOfMatches" name="numberOfMatches" required />
+
+      <label for="score">Score:</label>
+      <input type="number" id="score" name="score" required />
+
+      <label for="fifties">Fifties:</label>
+      <input type="number" id="fifties" name="fifties" required />
+
+      <label for="centuries">Centuries:</label>
+      <input type="number" id="centuries" name="centuries" required />
+
+      <label for="wickets">Wickets:</label>
+      <input type="number" id="wickets" name="wickets" required />
+
+      <label for="average">Average:</label>
+      <input type="number" id="average" name="average" step="0.01" required />
+
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+
+  <!-- this will search for the player Form we created-->
+  <form onsubmit="getData(event)">
+    <div class="searchform">
+      <input type="text" id="playerName" name="playerName" placeholder="Search by player name" required />
+      <button type="submit">Search</button>
+    </div>
+  </form>
+
+  <!-- Display -->
+  <ul id="basic-info" style="list-style-type: none"></ul>
+  <div id="info">
+    <ul id="personal-info" style="list-style-type: none"></ul>
+    <div id="career-info"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
