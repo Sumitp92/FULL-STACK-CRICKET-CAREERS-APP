@@ -54,7 +54,6 @@ const saveData = async (event) => {
   }
 };
 
-// Function to display player data
 function showData(players) {
   basicInfo.innerHTML = "";
   personalInfo.innerHTML = "";
@@ -67,7 +66,7 @@ function showData(players) {
 
   const editBtn = document.createElement("button");
   editBtn.textContent = "Edit";
-  editBtn.onclick = () => editPlayerData(players); // Pass the entire player object
+  editBtn.onclick = () => editPlayerData(players); 
   basicInfo.appendChild(editBtn);
 
   const img = document.createElement("img");
@@ -101,7 +100,7 @@ function showData(players) {
 function editPlayerData(players) {
   formElement.style.display = previousDisplay;
 
-  // Set the current player ID
+ 
   currentPlayerId = players.id; // Assuming `players` has an `id` property
 
   document.getElementById("name").value = players.name;
@@ -117,17 +116,15 @@ function editPlayerData(players) {
   document.getElementById("average").value = players.average;
 }
 
-// Function to fetch player data 
 async function getData(event) {
   event.preventDefault();
   const playerName = event.target.playerName.value;
   const encodedPlayerName = encodeURIComponent(playerName);
 
   try {
-    // Get request to fetch player data
     const res = await axios.get(`http://localhost:3000/player-info/${encodedPlayerName}`);
-    document.querySelector(".form").style.display = "none"; // Hide the form after fetching data
-    showData(res.data.playerDetails); // Show player data
+    document.querySelector(".form").style.display = "none"; 
+    showData(res.data.playerDetails);
     event.target.reset(); // Reset the input field
   } catch (error) {
     console.error("Error fetching player data:", error);
@@ -135,8 +132,6 @@ async function getData(event) {
   }
 }
 
-// Event listener for form submission to fetch player data
 document.querySelector(".fetch-player-form").addEventListener("submit", getData);
 
-// Event listener for the form to save player data
 formElement.addEventListener("submit", saveData);
