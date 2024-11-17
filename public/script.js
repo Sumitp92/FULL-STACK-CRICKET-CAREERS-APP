@@ -4,6 +4,8 @@ const careerInfo = document.getElementById("career-info");
 const formElement = document.querySelector(".form");
 const previousDisplay = window.getComputedStyle(formElement).display;
 
+let currentPlayerId; // Variable to store the current player's ID
+
 const saveData = async (event) => {
   event.preventDefault();
 
@@ -36,10 +38,17 @@ const saveData = async (event) => {
   };
 
   try {
-    //post request
-    await axios.post("http://localhost:3000/player-info", data);
+    if (currentPlayerId) {
+      // If currentPlayerId is set, we are updating an existing player
+      await axios.put(`http://localhost:3000/player-info/${currentPlayerId}`, data);
+      alert("Player information updated successfully.");
+    } else {
+      // Otherwise, create a new player
+      await axios.post("http://localhost:3000/player-info", data);
+      alert("Player information saved successfully.");
+    }
     event.target.reset();
-    alert("Player information saved successfully.");
+    currentPlayerId = null; // Reset the ID after saving
   } catch (error) {
     console.log("Error saving player data:", error);
   }
@@ -58,7 +67,7 @@ function showData(players) {
 
   const editBtn = document.createElement("button");
   editBtn.textContent = "Edit";
-  editBtn.onclick = () => editPlayerData(players);
+  editBtn.onclick = () => editPlayerData(players); // Pass the entire player object
   basicInfo.appendChild(editBtn);
 
   const img = document.createElement("img");
@@ -88,9 +97,12 @@ function showData(players) {
   careerInfo.appendChild(careerParagraph);
 }
 
-// function to edit player data
+// Function to edit player data
 function editPlayerData(players) {
   formElement.style.display = previousDisplay;
+
+  // Set the current player ID
+  currentPlayerId = players.id; // Assuming `players` has an `id` property
 
   document.getElementById("name").value = players.name;
   document.getElementById("dob").value = players.dob;
@@ -103,27 +115,28 @@ function editPlayerData(players) {
   document.getElementById("centuries").value = players.centuries;
   document.getElementById("wickets").value = players.wickets;
   document.getElementById("average").value = players.average;
-
-  // Delete the current record
-  axios.delete(`http://localhost:3000/player-info/${players.id}`);
 }
 
-// function to fetch player data 
+// Function to fetch player data 
 async function getData(event) {
   event.preventDefault();
   const playerName = event.target.playerName.value;
   const encodedPlayerName = encodeURIComponent(playerName);
 
   try {
-    // get request
+    // Get request to fetch player data
     const res = await axios.get(`http://localhost:3000/player-info/${encodedPlayerName}`);
-    document.querySelector(".form").style.display = "none";
-    showData(res.data.playerDetails);
-    event.target.reset();
+    document.querySelector(".form").style.display = "none"; // Hide the form after fetching data
+    showData(res.data.playerDetails); // Show player data
+    event.target.reset(); // Reset the input field
   } catch (error) {
     console.error("Error fetching player data:", error);
-    console.log("Error message:", error.message);
-    console.log("Error response:", error.response);
     alert("Player not found");
   }
 }
+
+// Event listener for form submission to fetch player data
+document.querySelector(".fetch-player-form").addEventListener("submit", getData);
+
+// Event listener for the form to save player data
+formElement.addEventListener("submit", saveData);

@@ -1,9 +1,19 @@
+// routes/playerRoutes.js
+
 const express = require('express');
 const router = express.Router();
-const player = require('../controllers/playerdata');
+const playerController = require('../controllers/playerdata'); // Adjust the path as necessary
 
-router.post('/player-info', player.postPlayer);
-router.get('/player-info', player.getPlayer);
-router.get('/player-info/:playerName', player.getfindPlayer);
-router.delete('/player-info/:playerId', player.deletePlayer);
+// Route to create a new player
+router.post('/player-info', playerController.postPlayer);
+
+// Route to get all players
+router.get('/player-info', playerController.getPlayer);
+
+// Route to find a specific player by name
+router.get('/player-info/:playerName', playerController.getfindPlayer);
+
+// Route to update a player's information by ID
+router.put('/player-info/:playerId', playerController.updatePlayer);
+
 module.exports = router;
